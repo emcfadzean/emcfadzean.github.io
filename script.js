@@ -1,5 +1,6 @@
 // Upcoming Features
-// - host on git and git commit updates
+// - touch screen keybord
+// - random bird selection on index from today's date
 // - set word list and tiles based on number of characters in selected bird.
 // - Stats and Win lose message.
 // - show stats on gameover
@@ -584,8 +585,8 @@ const sixLetterWordList = new Set([
   "tawaki",
   "pukeko",
 ]);
-const keyboard = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"]; //enter and backspace
-
+const keyboard = ["QWERTYUIOP", "ASDFGHJKL", ">ZXCVBNM<"]; //enter and backspace
+const validKey = "QWERTYUIOPASDFGHJKLZXCVBNM";
 let word = "PARERA";
 let letterOccurrence = new Map();
 console.log(letterOccurrence);
@@ -635,6 +636,9 @@ function initialize() {
     document.getElementById("keyboard").appendChild(keyRow);
     for (let c of keyboard[r]) {
       let key = document.createElement("span");
+      key.addEventListener("click", (e) => {
+        playMouse(key);
+      });
       key.id = "key-" + c.toString();
       key.classList.add("key");
       key.innerHTML = c;
@@ -643,42 +647,82 @@ function initialize() {
   }
 
   document.addEventListener("keyup", (e) => {
-    if (gameOver) {
-      return;
-    }
-
-    if ("KeyA" <= e.code && e.code <= "KeyZ") {
-      if (col < width) {
-        document.getElementById(row + "-" + col).innerText =
-          e.key.toUpperCase(); // current tile
-        col++;
-      }
-    } else if (e.code === "Backspace" && col > 0) {
-      col--;
-      document.getElementById(row + "-" + col).innerText = ""; // current tile
-    }
-
-    if (e.code === "Enter" && col === width) {
-      verifyWord(getUserInput());
-    } else if (e.code === "Enter" && col < width) {
-      answer = document.getElementById("answer");
-      answer.classList.add("answer");
-      answer.innerText = "Need more letters.";
-      setTimeout(() => {
-        answer.classList.remove("answer");
-        answer.innerText = "";
-      }, 2500);
-    }
-
-    // loser
-    if (!gameOver && row === height) {
-      gameOver = true;
-      answer = document.getElementById("answer");
-      answer.classList.add("answer");
-      answer.innerText = word;
-      updateStats();
-    }
+    playKeyboard(e);
   });
+}
+
+function playMouse(key) {
+  if (gameOver) {
+    return;
+  }
+  console.log(key.innerText);
+  if (validKey.includes(key.innerText)) {
+    if (col < width) {
+      document.getElementById(row + "-" + col).innerText = key.innerText; // current tile
+      col++;
+    }
+  } else if (key.innerText == "<") {
+    col--;
+    document.getElementById(row + "-" + col).innerText = ""; // current tile
+  }
+
+  if (key.innerText == ">" && col === width) {
+    verifyWord(getUserInput());
+  } else if (key.innerText == ">" && col < width) {
+    answer = document.getElementById("answer");
+    answer.classList.add("answer");
+    answer.innerText = "Need more letters.";
+    setTimeout(() => {
+      answer.classList.remove("answer");
+      answer.innerText = "";
+    }, 2500);
+  }
+
+  // loser
+  if (!gameOver && row === height) {
+    gameOver = true;
+    answer = document.getElementById("answer");
+    answer.classList.add("answer");
+    answer.innerText = word;
+    updateStats();
+  }
+}
+
+function playKeyboard(e) {
+  if (gameOver) {
+    return;
+  }
+
+  if ("KeyA" <= e.code && e.code <= "KeyZ") {
+    if (col < width) {
+      document.getElementById(row + "-" + col).innerText = e.key.toUpperCase(); // current tile
+      col++;
+    }
+  } else if (e.code === "Backspace" && col > 0) {
+    col--;
+    document.getElementById(row + "-" + col).innerText = ""; // current tile
+  }
+
+  if (e.code === "Enter" && col === width) {
+    verifyWord(getUserInput());
+  } else if (e.code === "Enter" && col < width) {
+    answer = document.getElementById("answer");
+    answer.classList.add("answer");
+    answer.innerText = "Need more letters.";
+    setTimeout(() => {
+      answer.classList.remove("answer");
+      answer.innerText = "";
+    }, 2500);
+  }
+
+  // loser
+  if (!gameOver && row === height) {
+    gameOver = true;
+    answer = document.getElementById("answer");
+    answer.classList.add("answer");
+    answer.innerText = word;
+    updateStats();
+  }
 }
 
 function getUserInput() {
