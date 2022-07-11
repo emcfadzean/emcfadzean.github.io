@@ -636,7 +636,7 @@ function initialize() {
     document.getElementById("keyboard").appendChild(keyRow);
     for (let c of keyboard[r]) {
       let key = document.createElement("span");
-      key.addEventListener("click", (e) => {
+      key.addEventListener("touchend", (e) => {
         playMouse(key);
       });
       key.id = "key-" + c.toString();
