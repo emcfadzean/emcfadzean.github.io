@@ -617,12 +617,16 @@ function initialize() {
 
   // create board
   for (let r = 0; r < height; r++) {
+    let divRow = document.createElement("div");
+    divRow.id = "row-" + r;
+    divRow.classList.add("row");
+    document.getElementById("board").appendChild(divRow);
     for (let c = 0; c < width; c++) {
       let tile = document.createElement("span");
       tile.id = r.toString() + "-" + c.toString();
       tile.classList.add("tile");
       tile.innerHTML = "";
-      document.getElementById("board").appendChild(tile);
+      document.getElementById("row-" + r).appendChild(tile);
     }
   }
 
@@ -630,6 +634,7 @@ function initialize() {
   for (let r = 0; r < 3; r++) {
     let keyRow = document.createElement("div");
     keyRow.id = "keyrow-" + r.toString();
+    keyRow.classList.add("row");
     keyRow.classList.add("keyrow");
     keyRow.classList.add("d-flex");
     keyRow.classList.add("justify-content-center");
