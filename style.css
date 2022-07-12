@@ -32,6 +32,24 @@ h1 {
   text-align: center;
 }
 
+.flip {
+  animation: 0.5s linear flipping;
+}
+
+@keyframes flipping {
+  0% {
+    transform: rotateX(0deg);
+  }
+
+  50% {
+    transform: rotateX(90deg);
+  }
+
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+
 h5 {
   margin: auto 0 auto auto;
   text-align: center;

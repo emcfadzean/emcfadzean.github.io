@@ -1,22 +1,21 @@
 // Upcoming Features
-// - touch screen keybord
-// - random bird selection on index from today's date
-// - set word list and tiles based on number of characters in selected bird.
+// - Animations
+// - Share link result
 // - Stats and Win lose message.
+// - Touch screen keybord:
+//    - unidentified bug where keyboard stops accepting input.
+//    - identifiable backspace and enter keys (rather than < and >)
+//    - correct letter colour overwritten
+
+// - set word list and tiles based on number of characters in selected bird.
 // - show stats on gameover
-// - Timer, new birdle at 10:00am each day
 // - Pseudo randomly selected bird name form list of nz birds, apply delay to bird so cannot be randomly selected twice.
 // - Add hint
 // - include spaces and dashes as characters
 // - Māori name where available
 // - Settings: Darkmode, high contrast, feedback
-// - Animations
-// - Available online
-// - Share link result
 // - Hardmode
 // - FAQ
-
-// Fixes
 
 // players current guessing position
 let row = 0; // attempt
@@ -24,6 +23,8 @@ let col = 0; // letter for attempt
 
 let gameOver = false;
 let hasWon = false;
+
+let birdIndex = null;
 
 const bigBirdList = [
   "parera",
@@ -86,510 +87,17 @@ const birdList = [
   "kakapo",
   "kereru",
   "tawaki",
+  "petrel",
+  "tomtit",
+  "falcon",
+  "cuckoo",
 ];
-const index = Math.floor(Math.random() * birdList.length);
-const sixLetterWordList = new Set([
-  "abroad",
-  "absorb",
-  "accept",
-  "access",
-  "accuse",
-  "across",
-  "action",
-  "active",
-  "actual",
-  "adjust",
-  "admire",
-  "advice",
-  "advise",
-  "affair",
-  "affect",
-  "afford",
-  "afraid",
-  "agency",
-  "agenda",
-  "almost",
-  "always",
-  "amount",
-  "animal",
-  "annual",
-  "answer",
-  "anyone",
-  "anyway",
-  "appeal",
-  "appear",
-  "around",
-  "arrest",
-  "arrive",
-  "artist",
-  "asleep",
-  "aspect",
-  "assert",
-  "assess",
-  "assign",
-  "assist",
-  "assume",
-  "assure",
-  "attach",
-  "attack",
-  "attend",
-  "author",
-  "barely",
-  "barrel",
-  "basket",
-  "battle",
-  "beauty",
-  "become",
-  "before",
-  "behind",
-  "belief",
-  "belong",
-  "beside",
-  "better",
-  "beyond",
-  "border",
-  "borrow",
-  "bother",
-  "bottle",
-  "bottom",
-  "branch",
-  "breast",
-  "breath",
-  "bridge",
-  "bright",
-  "broken",
-  "budget",
-  "bullet",
-  "burden",
-  "butter",
-  "button",
-  "camera",
-  "campus",
-  "cancer",
-  "carbon",
-  "career",
-  "center",
-  "chance",
-  "change",
-  "charge",
-  "cheese",
-  "choice",
-  "choose",
-  "church",
-  "circle",
-  "client",
-  "clinic",
-  "closer",
-  "coffee",
-  "column",
-  "comedy",
-  "commit",
-  "common",
-  "cookie",
-  "corner",
-  "cotton",
-  "county",
-  "couple",
-  "course",
-  "cousin",
-  "create",
-  "credit",
-  "crisis",
-  "critic",
-  "custom",
-  "damage",
-  "danger",
-  "dealer",
-  "debate",
-  "decade",
-  "decide",
-  "deeply",
-  "defeat",
-  "defend",
-  "define",
-  "degree",
-  "demand",
-  "depend",
-  "depict",
-  "deputy",
-  "derive",
-  "desert",
-  "design",
-  "desire",
-  "detail",
-  "detect",
-  "device",
-  "devote",
-  "differ",
-  "dining",
-  "dinner",
-  "direct",
-  "divide",
-  "doctor",
-  "double",
-  "driver",
-  "during",
-  "easily",
-  "editor",
-  "effect",
-  "effort",
-  "either",
-  "e-mail",
-  "emerge",
-  "employ",
-  "enable",
-  "energy",
-  "engage",
-  "engine",
-  "enough",
-  "ensure",
-  "entire",
-  "escape",
-  "estate",
-  "ethics",
-  "ethnic",
-  "evolve",
-  "exceed",
-  "except",
-  "expand",
-  "expect",
-  "expert",
-  "expose",
-  "extend",
-  "extent",
-  "fabric",
-  "factor",
-  "fairly",
-  "family",
-  "famous",
-  "farmer",
-  "father",
-  "fellow",
-  "female",
-  "figure",
-  "finger",
-  "finish",
-  "flavor",
-  "flight",
-  "flower",
-  "follow",
-  "forest",
-  "forget",
-  "formal",
-  "former",
-  "fourth",
-  "freeze",
-  "French",
-  "friend",
-  "future",
-  "galaxy",
-  "garage",
-  "garden",
-  "garlic",
-  "gather",
-  "gender",
-  "gently",
-  "German",
-  "gifted",
-  "glance",
-  "global",
-  "golden",
-  "ground",
-  "growth",
-  "guilty",
-  "handle",
-  "happen",
-  "hardly",
-  "health",
-  "heaven",
-  "height",
-  "highly",
-  "honest",
-  "horror",
-  "hungry",
-  "hunter",
-  "ignore",
-  "impact",
-  "impose",
-  "income",
-  "indeed",
-  "Indian",
-  "infant",
-  "inform",
-  "injury",
-  "inside",
-  "insist",
-  "intend",
-  "invest",
-  "invite",
-  "island",
-  "itself",
-  "jacket",
-  "Jewish",
-  "junior",
-  "killer",
-  "latter",
-  "launch",
-  "lawyer",
-  "leader",
-  "league",
-  "legacy",
-  "legend",
-  "length",
-  "lesson",
-  "letter",
-  "likely",
-  "listen",
-  "little",
-  "living",
-  "locate",
-  "lovely",
-  "mainly",
-  "makeup",
-  "manage",
-  "manner",
-  "margin",
-  "market",
-  "master",
-  "matter",
-  "medium",
-  "member",
-  "memory",
-  "mental",
-  "merely",
-  "method",
-  "middle",
-  "minute",
-  "mirror",
-  "mm-hmm",
-  "modern",
-  "modest",
-  "moment",
-  "mostly",
-  "mother",
-  "motion",
-  "murder",
-  "muscle",
-  "museum",
-  "Muslim",
-  "mutual",
-  "myself",
-  "narrow",
-  "nation",
-  "native",
-  "nature",
-  "nearby",
-  "nearly",
-  "nobody",
-  "normal",
-  "notice",
-  "notion",
-  "number",
-  "object",
-  "obtain",
-  "occupy",
-  "office",
-  "online",
-  "oppose",
-  "option",
-  "orange",
-  "origin",
-  "others",
-  "parent",
-  "partly",
-  "people",
-  "pepper",
-  "period",
-  "permit",
-  "person",
-  "phrase",
-  "planet",
-  "player",
-  "please",
-  "plenty",
-  "pocket",
-  "poetry",
-  "police",
-  "policy",
-  "potato",
-  "powder",
-  "prayer",
-  "prefer",
-  "pretty",
-  "priest",
-  "prison",
-  "profit",
-  "prompt",
-  "proper",
-  "public",
-  "pursue",
-  "racial",
-  "rarely",
-  "rather",
-  "rating",
-  "reader",
-  "really",
-  "reason",
-  "recall",
-  "recent",
-  "recipe",
-  "record",
-  "reduce",
-  "reform",
-  "refuse",
-  "regard",
-  "regime",
-  "region",
-  "reject",
-  "relate",
-  "relief",
-  "remain",
-  "remind",
-  "remote",
-  "remove",
-  "repeat",
-  "report",
-  "resist",
-  "resort",
-  "result",
-  "retain",
-  "retire",
-  "return",
-  "reveal",
-  "review",
-  "rhythm",
-  "sacred",
-  "safety",
-  "salary",
-  "sample",
-  "saving",
-  "scared",
-  "scheme",
-  "school",
-  "scream",
-  "screen",
-  "script",
-  "search",
-  "season",
-  "second",
-  "secret",
-  "sector",
-  "secure",
-  "select",
-  "Senate",
-  "senior",
-  "series",
-  "settle",
-  "severe",
-  "sexual",
-  "shadow",
-  "should",
-  "shower",
-  "signal",
-  "silent",
-  "silver",
-  "simple",
-  "simply",
-  "singer",
-  "single",
-  "sister",
-  "slight",
-  "slowly",
-  "smooth",
-  "soccer",
-  "social",
-  "source",
-  "Soviet",
-  "speech",
-  "spirit",
-  "spread",
-  "spring",
-  "square",
-  "stable",
-  "status",
-  "steady",
-  "stream",
-  "street",
-  "stress",
-  "strike",
-  "string",
-  "stroke",
-  "strong",
-  "studio",
-  "stupid",
-  "submit",
-  "sudden",
-  "suffer",
-  "summer",
-  "summit",
-  "supply",
-  "surely",
-  "survey",
-  "switch",
-  "symbol",
-  "system",
-  "tactic",
-  "talent",
-  "target",
-  "tennis",
-  "terror",
-  "thanks",
-  "theory",
-  "thirty",
-  "though",
-  "threat",
-  "throat",
-  "ticket",
-  "tissue",
-  "tomato",
-  "tongue",
-  "toward",
-  "travel",
-  "treaty",
-  "tunnel",
-  "twelve",
-  "twenty",
-  "unable",
-  "unique",
-  "United",
-  "unless",
-  "unlike",
-  "useful",
-  "valley",
-  "versus",
-  "vessel",
-  "victim",
-  "viewer",
-  "virtue",
-  "vision",
-  "visual",
-  "volume",
-  "wander",
-  "wealth",
-  "weapon",
-  "weekly",
-  "weight",
-  "widely",
-  "window",
-  "winner",
-  "winter",
-  "wisdom",
-  "within",
-  "wonder",
-  "wooden",
-  "worker",
-  "writer",
-  "yellow",
-  "kakapo",
-  "kereru",
-  "tawaki",
-  "pukeko",
-]);
-const keyboard = ["QWERTYUIOP", "ASDFGHJKL", ">ZXCVBNM<"]; //enter and backspace
+
+const keyboard = ["QWERTYUIOP", "ASDFGHJKL", "<ZXCVBNM>"]; //backspace and enter
 const validKey = "QWERTYUIOPASDFGHJKLZXCVBNM";
-let word = "PARERA";
+let word = "";
 let letterOccurrence = new Map();
-console.log(letterOccurrence);
+
 let height = 6; // guesses
 let width = 6; // length of word
 
@@ -603,6 +111,7 @@ window.onload = function () {
 };
 
 function initialize() {
+  setWord();
   getStats();
   countDown();
   //set bird map
@@ -784,34 +293,41 @@ function update() {
     let letter = currTile.innerText;
     let currKey = document.getElementById("key-" + letter);
 
-    if (letter === word[c]) {
-      currTile.classList.add("correct");
-      if (currKey.classList.length > 1) {
-        currKey.classList.remove(currKey.classList[1]);
-      }
-      currKey.classList.add("correct");
-      tmpOccurrence.set(String(letter), tmpOccurrence.get(String(letter)) - 1);
-      correct++;
-    } else if (word.includes(letter)) {
-      if (tmpOccurrence.get(String(letter)) > 0) {
-        currTile.classList.add("present");
-        if (currKey.classList[1] == "correct") {
-          // do nothing
-        } else {
-          currKey.classList.add("present");
+    setTimeout(() => {
+      currTile.classList.add("flip");
+      if (letter === word[c]) {
+        currTile.classList.add("correct");
+        if (currKey.classList.length > 1) {
+          currKey.classList.remove(currKey.classList[1]);
         }
+        currKey.classList.add("correct");
+
         tmpOccurrence.set(
           String(letter),
-          tmpOccurrence.get(String(letter) - 1)
+          tmpOccurrence.get(String(letter)) - 1
         );
+        correct++;
+      } else if (word.includes(letter)) {
+        if (tmpOccurrence.get(String(letter)) > 0) {
+          currTile.classList.add("present");
+          if (currKey.classList[1] == "correct") {
+            // do nothing
+          } else {
+            currKey.classList.add("present");
+          }
+          tmpOccurrence.set(
+            String(letter),
+            tmpOccurrence.get(String(letter) - 1)
+          );
+        } else {
+          currTile.classList.add("absent");
+          currKey.classList.add("absent");
+        }
       } else {
         currTile.classList.add("absent");
         currKey.classList.add("absent");
       }
-    } else {
-      currTile.classList.add("absent");
-      currKey.classList.add("absent");
-    }
+    }, 500 * c);
   }
   if (correct === width) {
     gameOver = true;
@@ -889,6 +405,17 @@ function getStats() {
     }
   }
   // display stats in modal
+}
+
+function setWord() {
+  let original = new Date(2022, 06, 08, 0, 0, 0, 0);
+  let today = new Date();
+
+  difference = today.getDate() - original.getDate();
+  //differenceDays = difference / (1000 * 3600 * 24);
+  birdIndex = difference % birdList.length;
+  word = birdList[birdIndex].toUpperCase();
+  console.log(difference, word, birdList[difference]);
 }
 
 // birdle at midnight
