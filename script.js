@@ -1,13 +1,11 @@
 // Upcoming Features
-// - Random bird selection
-//    - On index from today's date
-//    - Timer, new birdle at midnight
 // - Animations
 // - Share link result
 // - Stats and Win lose message.
 // - Touch screen keybord:
 //    - unidentified bug where keyboard stops accepting input.
 //    - identifiable backspace and enter keys (rather than < and >)
+//    - correct letter colour overwritten
 
 // - set word list and tiles based on number of characters in selected bird.
 // - show stats on gameover
@@ -295,34 +293,41 @@ function update() {
     let letter = currTile.innerText;
     let currKey = document.getElementById("key-" + letter);
 
-    if (letter === word[c]) {
-      currTile.classList.add("correct");
-      if (currKey.classList.length > 1) {
-        currKey.classList.remove(currKey.classList[1]);
-      }
-      currKey.classList.add("correct");
-      tmpOccurrence.set(String(letter), tmpOccurrence.get(String(letter)) - 1);
-      correct++;
-    } else if (word.includes(letter)) {
-      if (tmpOccurrence.get(String(letter)) > 0) {
-        currTile.classList.add("present");
-        if (currKey.classList[1] == "correct") {
-          // do nothing
-        } else {
-          currKey.classList.add("present");
+    setTimeout(() => {
+      currTile.classList.add("flip");
+      if (letter === word[c]) {
+        currTile.classList.add("correct");
+        if (currKey.classList.length > 1) {
+          currKey.classList.remove(currKey.classList[1]);
         }
+        currKey.classList.add("correct");
+
         tmpOccurrence.set(
           String(letter),
-          tmpOccurrence.get(String(letter) - 1)
+          tmpOccurrence.get(String(letter)) - 1
         );
+        correct++;
+      } else if (word.includes(letter)) {
+        if (tmpOccurrence.get(String(letter)) > 0) {
+          currTile.classList.add("present");
+          if (currKey.classList[1] == "correct") {
+            // do nothing
+          } else {
+            currKey.classList.add("present");
+          }
+          tmpOccurrence.set(
+            String(letter),
+            tmpOccurrence.get(String(letter) - 1)
+          );
+        } else {
+          currTile.classList.add("absent");
+          currKey.classList.add("absent");
+        }
       } else {
         currTile.classList.add("absent");
         currKey.classList.add("absent");
       }
-    } else {
-      currTile.classList.add("absent");
-      currKey.classList.add("absent");
-    }
+    }, 500 * c);
   }
   if (correct === width) {
     gameOver = true;
