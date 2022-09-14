@@ -300,7 +300,7 @@ function inputValid(userInput) {
 async function verifyWord(userInput) {
   console.log(userInput);
   let apiURL = "https://api.dictionaryapi.dev/api/v2/entries/en/" + userInput;
-  fetch(apiURL, { credentials: "include" })
+  fetch(apiURL)
     .then((res) => {
       console.log(birdList.includes(userInput), userInput);
       if (res.ok || birdList.includes(userInput)) {
