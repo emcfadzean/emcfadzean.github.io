@@ -221,12 +221,15 @@ function playMouse(key) {
   if (key.id == ">" && col === width) {
     verifyWord(getUserInput());
   } else if (key.id == ">" && col < width) {
+    console.log("HERE");
     let answer = document.getElementById("answer");
+    answer.removeAttribute("hidden");
     answer.classList.add("answer");
     answer.innerText = "Need more letters.";
     setTimeout(() => {
       answer.classList.remove("answer");
       answer.innerText = "";
+      answer.setAttribute("hidden", true);
     }, 2500);
   }
 
@@ -259,11 +262,13 @@ function playKeyboard(e) {
     verifyWord(getUserInput());
   } else if (e.code === "Enter" && col < width) {
     let answer = document.getElementById("answer");
+    answer.removeAttribute("hidden");
     answer.classList.add("answer");
     answer.innerText = "Need more letters.";
     setTimeout(() => {
       answer.classList.remove("answer");
       answer.innerText = "";
+      answer.setAttribute("hidden", true);
     }, 2500);
   }
 
@@ -311,15 +316,17 @@ async function verifyWord(userInput) {
       } else {
         // do not update board, provide feedback.
         answer = document.getElementById("answer");
+        answer.removeAttribute("hidden");
         answer.classList.add("answer");
         answer.innerText = "Not in word list.";
         setTimeout(() => {
           answer.classList.remove("answer");
           answer.innerText = "";
+          answer.setAttribute("hidden", true);
         }, 2500);
       }
     })
-    .catch((err) => alert(err));
+    .catch((err) => console.err(err));
 }
 
 function update() {
@@ -328,8 +335,7 @@ function update() {
   for (let c = 0; c < width; c++) {
     let currTile = document.getElementById(row + "-" + c);
     let letter = currTile.innerText;
-    let currKey = document.getElementById("key-" + letter);
-
+    let currKey = document.getElementById(letter);
     setTimeout(() => {
       currTile.classList.add("flip");
       if (letter === word[c]) {
@@ -364,15 +370,21 @@ function update() {
         currTile.classList.add("absent");
         currKey.classList.add("absent");
       }
+      if (correct === width) {
+        gameOver = true;
+        answer = document.getElementById("answer");
+        answer.removeAttribute("hidden");
+        answer.classList.add("answer");
+        answer.innerText = "Correct";
+        setTimeout(() => {
+          answer.classList.remove("answer");
+          answer.innerText = "";
+          answer.setAttribute("hidden", true);
+        }, 2500);
+        hasWon = true;
+        updateStats();
+      }
     }, 500 * c);
-  }
-  if (correct === width) {
-    gameOver = true;
-    answer = document.getElementById("answer");
-    answer.classList.add("answer");
-    answer.innerText = "Correct";
-    hasWon = true;
-    updateStats();
   }
 }
 
@@ -452,7 +464,7 @@ function setWord() {
   //differenceDays = difference / (1000 * 3600 * 24);
   birdIndex = difference % birdList.length;
   word = birdList[birdIndex].toUpperCase();
-  console.log(difference, word, birdList[difference]);
+  //console.log(difference, word, birdList[difference]);
 }
 
 // birdle at midnight

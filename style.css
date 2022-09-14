@@ -49,7 +49,7 @@ body {
 }
 
 .wide {
-  width: 9vw;
+  width: 12vw;
   max-width: 72px;
 }
 
@@ -63,6 +63,19 @@ h1 {
   font-weight: bold;
   text-align: center;
   margin: 0px;
+}
+
+.fade {
+  animation: 0.5s linear fade;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .flip {
@@ -124,7 +137,7 @@ li {
   height: 50px;
 }
 .answer {
-  border: 1px solid white;
+  border: 1px solid black;
   padding: 10px;
   margin: 0 auto 0 auto;
   background-color: black;
@@ -133,6 +146,10 @@ li {
   font-weight: bold;
   border-radius: 5px;
   max-width: fit-content;
+  position: fixed;
+  top: 50vh;
+  left: 50vw;
+  transform: translate(-50%, -50%);
 }
 
 .tile {
@@ -192,10 +209,6 @@ li {
   .key {
     margin-left: 2px;
     margin-right: 2px;
-  }
-
-  .wide {
-    width: 7vw;
   }
 
   #container {
