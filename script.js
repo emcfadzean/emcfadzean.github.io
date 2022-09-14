@@ -1,3 +1,16 @@
+// Tasks:
+// - Fit viewport for mobile.
+// - Button based keyboard.
+// - Review async code, TAWAKI bug.
+// - Failes to fetch on mobile.
+
+// Bugs
+// - Ben's iPhone SE viewport 320 x 568
+// - case: word = TAWAKI
+// - Pukeko, yellow k and green k. But only one k in word.
+// - < three times, greys out multiple empty lines.
+// - Touch in some location causes no more touches to be received.
+
 // Upcoming Features
 // - Animations
 // - Share link result
@@ -16,6 +29,8 @@
 // - Settings: Darkmode, high contrast, feedback
 // - Hardmode
 // - FAQ
+
+import { createKeyboard } from "./setup.js";
 
 // players current guessing position
 let row = 0; // attempt
@@ -140,50 +155,32 @@ function initialize() {
   }
 
   // create keyboard
-  for (let r = 0; r < 3; r++) {
-    let keyRow = document.createElement("div");
-    keyRow.id = "keyrow-" + r.toString();
-    keyRow.classList.add("row");
-    keyRow.classList.add("keyrow");
-    keyRow.classList.add("d-flex");
-    keyRow.classList.add("justify-content-center");
-    document.getElementById("keyboard").appendChild(keyRow);
-    for (let c of keyboard[r]) {
-      let key = document.createElement("span");
-      key.addEventListener("touchend", (e) => {
-        playMouse(key);
-      });
-      key.id = "key-" + c.toString();
-      key.classList.add("key");
-      key.innerHTML = c;
-      document.getElementById("keyrow-" + r.toString()).appendChild(key);
-    }
-  }
+  createKeyboard();
 
   document.addEventListener("keyup", (e) => {
     playKeyboard(e);
   });
 }
 
-function playMouse(key) {
+export function playMouse(key) {
   if (gameOver) {
     return;
   }
-  console.log(key.innerText);
-  if (validKey.includes(key.innerText)) {
+  console.log(key.id);
+  if (validKey.includes(key.id)) {
     if (col < width) {
-      document.getElementById(row + "-" + col).innerText = key.innerText; // current tile
+      document.getElementById(row + "-" + col).innerText = key.id; // current tile
       col++;
     }
-  } else if (key.innerText == "<") {
+  } else if (key.id == "<") {
     col--;
     document.getElementById(row + "-" + col).innerText = ""; // current tile
   }
 
-  if (key.innerText == ">" && col === width) {
+  if (key.id == ">" && col === width) {
     verifyWord(getUserInput());
-  } else if (key.innerText == ">" && col < width) {
-    answer = document.getElementById("answer");
+  } else if (key.id == ">" && col < width) {
+    let answer = document.getElementById("answer");
     answer.classList.add("answer");
     answer.innerText = "Need more letters.";
     setTimeout(() => {
@@ -195,7 +192,7 @@ function playMouse(key) {
   // loser
   if (!gameOver && row === height) {
     gameOver = true;
-    answer = document.getElementById("answer");
+    let answer = document.getElementById("answer");
     answer.classList.add("answer");
     answer.innerText = word;
     updateStats();
@@ -220,7 +217,7 @@ function playKeyboard(e) {
   if (e.code === "Enter" && col === width) {
     verifyWord(getUserInput());
   } else if (e.code === "Enter" && col < width) {
-    answer = document.getElementById("answer");
+    let answer = document.getElementById("answer");
     answer.classList.add("answer");
     answer.innerText = "Need more letters.";
     setTimeout(() => {
@@ -232,7 +229,7 @@ function playKeyboard(e) {
   // loser
   if (!gameOver && row === height) {
     gameOver = true;
-    answer = document.getElementById("answer");
+    let answer = document.getElementById("answer");
     answer.classList.add("answer");
     answer.innerText = word;
     updateStats();
@@ -264,7 +261,6 @@ async function verifyWord(userInput) {
   let apiURL = "https://api.dictionaryapi.dev/api/v2/entries/en/" + userInput;
   fetch(apiURL)
     .then((res) => {
-      ok = res.ok;
       console.log(birdList.includes(userInput), userInput);
       if (res.ok || birdList.includes(userInput)) {
         // update board.
@@ -395,7 +391,7 @@ function getStats() {
     console.log("Initialise local storage.");
     console.log(localStorage);
   } else {
-    for (i = 0; i < localStorage.length - 1; i++) {
+    for (let i = 0; i < localStorage.length - 1; i++) {
       let value = localStorage.getItem(keys[i]);
       let content = document.getElementById(keys[i]);
       console.log(content);
@@ -408,10 +404,10 @@ function getStats() {
 }
 
 function setWord() {
-  let original = new Date(2022, 06, 08, 0, 0, 0, 0);
+  let original = new Date(2022, 6, 8, 0, 0, 0, 0);
   let today = new Date();
 
-  difference = today.getDate() - original.getDate();
+  let difference = today.getDate() - original.getDate();
   //differenceDays = difference / (1000 * 3600 * 24);
   birdIndex = difference % birdList.length;
   word = birdList[birdIndex].toUpperCase();

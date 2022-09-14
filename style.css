@@ -6,23 +6,51 @@ body {
   background-color: white;
 }
 
+#keyboard {
+  margin-top: 10px;
+  position: fixed;
+  bottom: 0px;
+}
+
 .keyrow {
-  margin: 0 auto;
+  padding: 0 0 6px 0;
+  justify-content: center;
+  display: flex;
+}
+
+.row {
+  margin: 0 auto 0 auto;
 }
 
 .key {
-  border: 2px solid lightgray;
+  border: 1px solid #d3d6da;
   border-radius: 2px;
-  background-color: lightgray;
-  width: 20px;
-  height: 40px;
-  margin: 2.5px;
+  background-color: #d3d6da;
+  width: 4vh;
+  height: 58px;
+  margin-left: 3px;
+  margin-right: 3px;
 
   color: black;
   font-size: small;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.space {
+  width: 2vh;
+  color: white;
+  background-color: white;
+  border: none;
+}
+
+.wide {
+  width: 6vh;
+}
+
+ion-icon {
+  font-size: 24px;
 }
 
 h1 {
@@ -60,15 +88,17 @@ li {
   padding: 10px;
 }
 #container {
-  height: 50vh;
+  height: 70vh;
+  margin: auto;
 }
 
 #board {
   width: 420px;
-  min-width: 400px;
+  height: 300px;
+  /* min-width: 400px; */
   /* height: 420px; */
-  margin: 0 auto 0 auto;
-  margin-top: 3px;
+  margin: auto;
+  /* margin-top: 3px; */
   display: flex;
   flex-wrap: wrap;
 }
@@ -130,4 +160,35 @@ li {
   color: white;
   background-color: #787c7e;
   border-color: white;
+}
+
+.navbar {
+  border-bottom: 1px solid #787c7e;
+  margin: 0;
+}
+
+.navButtons {
+  background-color: white;
+  border: none;
+  color: none;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+@media (max-width: 600px) {
+  .tile {
+    border: 2px solid lightgray;
+    width: 7vh;
+    height: 7vh;
+    margin: 1vw;
+  }
+
+  .wide {
+    width: 8vh;
+  }
+
+  #container {
+    height: 50vh;
+  }
 }

@@ -11,7 +11,7 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="style.css" />
-    <script src="script.js" defer></script>
+    <script type="module" src="script.js" defer></script>
 
     <title>Kiwi Birdle</title>
   </head>
@@ -26,133 +26,146 @@
       integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy"
       crossorigin="anonymous"
     ></script>
-    <div class="row"></div>
-    <header>
-      <h1 id="title">Kiwi Birdle</h1>
-      <hr />
-      <br />
-    </header>
-    <div id="answer" class="row"></div>
-    <div
-      id="container"
-      class="row d-flex justify-content-center align-items-center"
-    >
-      <div id="board" class="d-flex justify-content-center"></div>
-    </div>
-    <br />
-    <div id="keyboard" class="row"></div>
-    <div class="row">
-      <footer>
+    <div class="navbar row d-flex justify-content-center align-items-center">
+      <div class="col-4"></div>
+      <div class="col-4">
+        <header>
+          <h1 id="title">Kiwi Birdle</h1>
+        </header>
+      </div>
+      <div class="col-4">
         <ul class="nav justify-content-center">
           <li>
             <button
+              class="navButtons"
               type="button"
-              class="btn btn-light"
               data-bs-toggle="modal"
-              data-bs-target="#helpModal"
+              data-bs-target="#statsModal"
             >
-              Help
+              <img width="20px" height="20px" src="./svg/stats-chart.svg" />
             </button>
           </li>
           <li>
             <button
+              class="navButtons"
               type="button"
-              class="btn btn-primary"
               data-bs-toggle="modal"
-              data-bs-target="#statsModal"
+              data-bs-target="#helpModal"
             >
-              Stats
+              <img
+                width="20px"
+                height="20px"
+                src="./svg/help-circle-outline.svg"
+              />
             </button>
           </li>
         </ul>
-        <!-- Help Modal -->
-        <div
-          class="modal fade"
-          id="helpModal"
-          tabindex="-1"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">HOW TO PLAY</h5>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div class="modal-body">
-                <p><strong>Guess the bird in six tries.</strong></p>
-                <p>
-                  Each guess must be a valid six-letter word. Hit the enter
-                  button to submit.
-                </p>
-                <p>
-                  After each guess, the color of the tiles will change to show
-                  how close your guess was to the word.
-                </p>
-                <hr />
-
-                <p><strong>Examples</strong></p>
-                <p>The letter K is in the word and in the correct spot.</p>
-                <div class="example">
-                  <span class="tile correct">K</span><span class="tile">A</span
-                  ><span class="tile">K</span><span class="tile">A</span
-                  ><span class="tile">P</span><span class="tile">O</span>
-                </div>
-                <p>The letter S is in the word but in the wrong spot.</p>
-                <div class="example">
-                  <span class="tile">G</span><span class="tile">O</span
-                  ><span class="tile">O</span><span class="tile present">S</span
-                  ><span class="tile">E</span><span class="tile">S</span>
-                </div>
-                <p>The letter E is not in the word in any spot.</p>
-                <div class="example">
-                  <span class="tile">B</span><span class="tile">I</span
-                  ><span class="tile">R</span><span class="tile">D</span
-                  ><span class="tile">I</span><span class="tile absent">E</span>
-                </div>
-              </div>
-              <div class="modal-footer"></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Stats Modal -->
-        <div
-          class="modal fade"
-          id="statsModal"
-          tabindex="-1"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Stats</h5>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div class="modal-body">
-                <div>
-                  <p id="gamesPlayed">Games Played:</p>
-                  <p id="gamesWon">Games Won:</p>
-                  <p id="gamesLost">Games Lost:</p>
-                </div>
-                <div id="countdown"></div>
-              </div>
-              <div class="modal-footer"></div>
-            </div>
-          </div>
-        </div>
-      </footer>
+      </div>
     </div>
+
+    <div id="container" class="d-flex align-items-center">
+      <div id="board" class="d-flex justify-content-center"></div>
+    </div>
+    <div class="d-flex align-items-center">
+      <div id="keyboard" class="row align-items-center"></div>
+    </div>
+
+    <footer>
+      <!-- Help Modal -->
+      <div
+        class="modal fade"
+        id="helpModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">HOW TO PLAY</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <p><strong>Guess the bird in six tries.</strong></p>
+              <p>
+                Each guess must be a valid six-letter word. Hit the enter button
+                to submit.
+              </p>
+              <p>
+                After each guess, the color of the tiles will change to show how
+                close your guess was to the word.
+              </p>
+              <hr />
+
+              <p><strong>Examples</strong></p>
+              <p>The letter K is in the word and in the correct spot.</p>
+              <div class="example">
+                <span class="tile correct">K</span><span class="tile">A</span
+                ><span class="tile">K</span><span class="tile">A</span
+                ><span class="tile">P</span><span class="tile">O</span>
+              </div>
+              <p>The letter S is in the word but in the wrong spot.</p>
+              <div class="example">
+                <span class="tile">G</span><span class="tile">O</span
+                ><span class="tile">O</span><span class="tile present">S</span
+                ><span class="tile">E</span><span class="tile">S</span>
+              </div>
+              <p>The letter E is not in the word in any spot.</p>
+              <div class="example">
+                <span class="tile">B</span><span class="tile">I</span
+                ><span class="tile">R</span><span class="tile">D</span
+                ><span class="tile">I</span><span class="tile absent">E</span>
+              </div>
+            </div>
+            <div class="modal-footer"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Modal -->
+      <div
+        class="modal fade"
+        id="statsModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Stats</h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <div>
+                <p id="gamesPlayed">Games Played:</p>
+                <p id="gamesWon">Games Won:</p>
+                <p id="gamesLost">Games Lost:</p>
+              </div>
+              <div id="countdown"></div>
+            </div>
+            <div class="modal-footer"></div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
   </body>
 </html>
