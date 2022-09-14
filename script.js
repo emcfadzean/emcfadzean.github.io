@@ -162,6 +162,7 @@ function initialize() {
   });
 }
 
+// too many backspaces breaks it...
 export function playMouse(key) {
   if (gameOver) {
     return;
