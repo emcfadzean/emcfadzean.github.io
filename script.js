@@ -30,7 +30,7 @@
 // - Hardmode
 // - FAQ
 
-import { createKeyboard } from "./setup.js";
+//import { createKeyboard } from "./setup.js";
 
 // players current guessing position
 let row = 0; // attempt
@@ -108,7 +108,7 @@ const birdList = [
   "cuckoo",
 ];
 
-const keyboard = ["QWERTYUIOP", "ASDFGHJKL", "<ZXCVBNM>"]; //backspace and enter
+//const keyboard = ["QWERTYUIOP", "ASDFGHJKL", "<ZXCVBNM>"]; //backspace and enter
 const validKey = "QWERTYUIOPASDFGHJKLZXCVBNM";
 let word = "";
 let letterOccurrence = new Map();
@@ -162,8 +162,48 @@ function initialize() {
   });
 }
 
-// too many backspaces breaks it...
-export function playMouse(key) {
+function createKeyboard() {
+  const keyboard = ["QWERTYUIOP", "-ASDFGHJKL-", ">ZXCVBNM<"];
+
+  for (let r = 0; r < 3; r++) {
+    let keyRow = document.createElement("div");
+    keyRow.id = "keyrow-" + r.toString();
+    keyRow.classList.add("row");
+    keyRow.classList.add("keyrow");
+    document.getElementById("keyboard").appendChild(keyRow);
+    for (let c of keyboard[r]) {
+      let key = document.createElement("button");
+      key.addEventListener("touchend", (e) => {
+        playMouse(key);
+      });
+      key.id = c.toString();
+
+      if (c.toString() === "-") {
+        key.innerHTML = " ";
+        key.classList.add("space");
+        document.getElementById("keyrow-" + r.toString()).appendChild(key);
+        continue;
+      }
+
+      key.classList.add("key");
+      key.innerHTML = c;
+
+      // backspace
+      if (c.toString() === "<") {
+        key.innerHTML = "<ion-icon name='backspace-outline'></ion-icon>";
+        key.classList.add("wide");
+      }
+      if (c.toString() === ">") {
+        key.innerHTML = "ENTER";
+        key.classList.add("wide");
+      }
+
+      document.getElementById("keyrow-" + r.toString()).appendChild(key);
+    }
+  }
+}
+
+function playMouse(key) {
   if (gameOver) {
     return;
   }
@@ -173,7 +213,7 @@ export function playMouse(key) {
       document.getElementById(row + "-" + col).innerText = key.id; // current tile
       col++;
     }
-  } else if (key.id == "<") {
+  } else if (key.id == "<" && col > 0) {
     col--;
     document.getElementById(row + "-" + col).innerText = ""; // current tile
   }
@@ -260,7 +300,7 @@ function inputValid(userInput) {
 async function verifyWord(userInput) {
   console.log(userInput);
   let apiURL = "https://api.dictionaryapi.dev/api/v2/entries/en/" + userInput;
-  fetch(apiURL)
+  fetch(apiURL, { credentials: "include" })
     .then((res) => {
       console.log(birdList.includes(userInput), userInput);
       if (res.ok || birdList.includes(userInput)) {
@@ -347,7 +387,7 @@ function initializeStats() {
   guesses = JSON.stringify(guesses); // needs to be json string.
   console.log(guesses);
   let values = ["0", "0", "0", guesses];
-  for (i = 0; i < keys.length; i++) {
+  for (let i = 0; i < keys.length; i++) {
     localStorage.setItem(keys[i], values[i]);
   }
 }
@@ -360,7 +400,7 @@ function updateStats() {
     console.log("Initialise local storage.");
     console.log(localStorage);
   } else {
-    for (i = 0; i < localStorage.length; i++) {
+    for (let i = 0; i < localStorage.length; i++) {
       let value = localStorage.getItem(keys[i]);
       let key = keys[i];
       let content = document.getElementById(key);
