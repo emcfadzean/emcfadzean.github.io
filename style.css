@@ -10,6 +10,7 @@ body {
   margin-top: 10px;
   position: fixed;
   bottom: 0px;
+  width: 100vw;
 }
 
 .keyrow {
@@ -24,15 +25,17 @@ body {
 
 .key {
   border: 1px solid #d3d6da;
-  border-radius: 2px;
+  border-radius: 4px;
   background-color: #d3d6da;
-  width: 4vh;
+  width: 7vw;
+  max-width: 48px;
   height: 58px;
   margin-left: 3px;
   margin-right: 3px;
 
   color: black;
   font-size: small;
+  font-weight: bold;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -46,7 +49,8 @@ body {
 }
 
 .wide {
-  width: 6vh;
+  width: 9vw;
+  max-width: 72px;
 }
 
 ion-icon {
@@ -54,10 +58,10 @@ ion-icon {
 }
 
 h1 {
-  padding-top: 20px;
   font-size: larger;
   font-weight: bold;
   text-align: center;
+  margin: 0px;
 }
 
 .flip {
@@ -163,7 +167,7 @@ li {
 }
 
 .navbar {
-  border-bottom: 1px solid #787c7e;
+  border-bottom: 1px solid #d3d6da;
   margin: 0;
 }
 
@@ -185,14 +189,17 @@ li {
   } */
 
   .key {
-    height: 48px;
+    margin-left: 2px;
+    margin-right: 2px;
+    width: 3vh;
+    font-weight: normal;
   }
 
   .wide {
-    width: 8vh;
+    width: 7vh;
   }
 
   #container {
-    height: 50vh;
+    height: 53vh;
   }
 }
