@@ -462,7 +462,7 @@ function setWord() {
 
   let difference = today.getDate() - original.getDate();
   //differenceDays = difference / (1000 * 3600 * 24);
-  birdIndex = difference % birdList.length;
+  birdIndex = Math.abs(difference % birdList.length);
   word = birdList[birdIndex].toUpperCase();
   //console.log(difference, word, birdList[difference]);
 }
